@@ -23,36 +23,54 @@ function Admin() {
   useEffect(() => {
 
     Promise.all([
-      api.get("/products"),
-      api.get("/categories"),
-      api.get("/orders", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }),
-      api.get("/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }),
-    ]).then(([products, categories, orders, users]) => {
+    api.get("/products"),
 
-      const revenue = orders.data.reduce(
-        (sum, order) => sum + order.totalPrice,
-        0
-      );
+    api.get("/categories"),
 
-      setStats({
-        products: products.data.length,
-        categories: categories.data.length,
-        orders: orders.data.length,
-        users: users.data.length,
-        revenue,
-      });
+    api.get("/orders", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }),
+
+    api.get("/customers", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }),
+
+  ])
+  .then(([products, categories, orders, users]) => {
+
+    const revenue = orders.data.reduce(
+      (sum, order) => sum + Number(order.totalPrice || 0),
+      0
+    );
+
+
+    setStats({
+
+      products: products.data.length,
+
+      categories: categories.data.length,
+
+      orders: orders.data.length,
+
+      users: users.data.length,
+
+      revenue,
 
     });
 
-  }, []);
+  })
+  .catch((error) => {
+
+    console.log("Dashboard error:", error);
+
+  });
+
+
+}, []);
 
   const cards = [
     {
@@ -206,4 +224,4 @@ function Admin() {
 
 }
 
-export default Admin;
+export default Admin;P
