@@ -15,9 +15,9 @@ try {
   await Product.deleteMany({});
   await Category.deleteMany({});
 
-  console.log("✅ Orders deleted");
-  console.log("✅ Products deleted");
-  console.log("✅ Categories deleted");
+  console.log("Orders deleted");
+  console.log("Products deleted");
+  console.log("Categories deleted");
 
 } catch (err) {
 
