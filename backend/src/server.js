@@ -7,6 +7,7 @@ import "./bot/bot.js";
 
 import categoryRoutes from "./router/categoryRoutes.js";
 import orderRoutes from "./router/orderRoutes.js";
+import adminRoutes from "./router/adminRoutes.js";
 
 
 app.get("/", (req, res) => {
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/categories", categoryRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/admin", adminRoutes);
 
 const PORT = process.env.PORT || 3000;
 
