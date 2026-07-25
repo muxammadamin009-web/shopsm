@@ -155,13 +155,13 @@ function Footer() {
 
             <p className="flex items-center gap-3">
               <FaPhone />
-              +998 90 000 00 00
+              +998 97 097 44 77
             </p>
 
 
             <p className="flex items-center gap-3">
               <FaEnvelope />
-              shop@gmail.com
+              muxammadamin009@gmail.com
             </p>
 
 
@@ -220,6 +220,7 @@ function Footer() {
 
             <FaTelegram
               className="hover:text-blue-400 cursor-pointer"
+              link="https://t.me/shopmsms88_bot"
             />
 
 
