@@ -8,7 +8,7 @@ function CreateProduct() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [category, setCategory] = useState("");
 
   const [categories, setCategories] = useState([]);
@@ -23,7 +23,10 @@ function CreateProduct() {
         setCategories(res.data);
       })
       .catch((error) => {
-        toast.error(error.response?.data?.message || "Failed to fetch categories");
+        toast.error(
+          error.response?.data?.message ||
+            "Failed to fetch categories"
+        );
       });
 
   }, []);
@@ -34,13 +37,36 @@ function CreateProduct() {
 
     try {
 
+      let imageUrl = "";
+
+      if (image) {
+
+        const formData = new FormData();
+
+        formData.append("image", image);
+
+        const upload = await api.post(
+          "/upload",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        imageUrl = upload.data.url;
+
+      }
+
       await api.post(
         "/products",
         {
           name,
           description,
           price,
-          image,
+          image: imageUrl,
           category,
         },
         {
@@ -56,7 +82,10 @@ function CreateProduct() {
 
     } catch (error) {
 
-      toast.error(error.response?.data?.message || "Something went wrong");
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong"
+      );
 
     }
 
@@ -81,14 +110,18 @@ function CreateProduct() {
             type="text"
             placeholder="Product name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
             className="w-full p-4 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700 outline-none"
           />
 
           <textarea
             placeholder="Description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) =>
+              setDescription(e.target.value)
+            }
             rows={5}
             className="w-full p-4 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700 outline-none resize-none"
           />
@@ -97,21 +130,26 @@ function CreateProduct() {
             type="number"
             placeholder="Price"
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={(e) =>
+              setPrice(e.target.value)
+            }
             className="w-full p-4 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700 outline-none"
           />
 
           <input
-            type="text"
-            placeholder="Image URL"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className="w-full p-4 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700 outline-none"
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setImage(e.target.files[0])
+            }
+            className="w-full p-4 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700"
           />
 
           <select
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) =>
+              setCategory(e.target.value)
+            }
             className="w-full p-4 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-700 outline-none"
           >
 
@@ -135,12 +173,9 @@ function CreateProduct() {
           {image && (
 
             <img
-              src={image}
+              src={URL.createObjectURL(image)}
               alt="Preview"
               className="w-full h-64 object-cover rounded-xl border"
-              onError={(e) => {
-                e.target.style.display = "none";
-              }}
             />
 
           )}
