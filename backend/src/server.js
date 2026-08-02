@@ -5,9 +5,11 @@ import app from "./app.js";
 import connectDB from "./config/db.js";
 import "./bot/bot.js";
 
+
 import categoryRoutes from "./router/categoryRoutes.js";
 import orderRoutes from "./router/orderRoutes.js";
 import adminRoutes from "./router/authRoutes.js";
+import uploadRoutes from "./router/uploadRoutes.js";
 
 
 app.get("/", (req, res) => {
@@ -20,7 +22,7 @@ app.get("/", (req, res) => {
 app.use("/api/categories", categoryRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/admin", adminRoutes);
-
+app.use("/upload", uploadRoutes);
 const PORT = process.env.PORT || 3000;
 
 const start = async () => {
