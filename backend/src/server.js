@@ -13,26 +13,16 @@ app.get("/", (req, res) => {
   });
 });
 
-
-app.use(bot.webhookCallback("/telegram"));
-
 const start = async () => {
   try {
-
     await connectDB();
-
-    await bot.telegram.setWebhook(
-      `${process.env.RENDER_EXTERNAL_URL}/telegram`
-    );
 
     app.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`);
     });
 
   } catch (error) {
-
     console.error(error);
-
   }
 };
 
