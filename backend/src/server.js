@@ -4,8 +4,6 @@ dotenv.config();
 import app from "./app.js";
 import connectDB from "./config/db.js";
 
-import bot from "./bot/bot.js";
-
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
