@@ -7,7 +7,7 @@ import "./bot/bot.js";
 
 import categoryRoutes from "./router/categoryRoutes.js";
 import orderRoutes from "./router/orderRoutes.js";
-import adminRoutes from "./router/adminRoutes.js";
+import adminRoutes from "./router/authRoutes.js";
 
 
 app.get("/", (req, res) => {

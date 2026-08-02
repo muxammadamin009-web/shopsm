@@ -2,9 +2,41 @@ import User from "../models/userModel.js";
 import Product from "../models/productModels.js";
 import Order from "../models/orderModel.js";
 
+const isAdmin = (ctx) =>
+  ctx.from.id === Number(process.env.ADMIN_CHAT_ID);
+
 export default function registerCommands(bot) {
 
+
+
+  bot.hears("📊 Dashboard", (ctx) => {
+    if (!isAdmin(ctx)) return;
+
+    ctx.telegram.emit("text", {
+      ...ctx.update,
+      message: {
+        ...ctx.message,
+        text: "/stats",
+      },
+    });
+  });
+
+  bot.hears("📦 Orders", (ctx) => {
+    if (!isAdmin(ctx)) return;
+
+    ctx.telegram.emit("text", {
+      ...ctx.update,
+      message: {
+        ...ctx.message,
+        text: "/orders",
+      },
+    });
+  });
+
+
   bot.command("stats", async (ctx) => {
+
+    if (!isAdmin(ctx)) return;
 
     try {
 
@@ -36,14 +68,16 @@ export default function registerCommands(bot) {
 `);
 
     } catch (err) {
-
       console.log(err);
-
     }
 
   });
 
+
+
   bot.command("orders", async (ctx) => {
+
+    if (!isAdmin(ctx)) return;
 
     try {
 
@@ -52,14 +86,12 @@ export default function registerCommands(bot) {
         .sort({ createdAt: -1 })
         .limit(10);
 
-      if (!orders.length) {
+      if (!orders.length)
         return ctx.reply("No orders.");
-      }
 
       for (const order of orders) {
 
         await ctx.reply(
-
 `🛒 <b>ORDER</b>
 
 👤 ${order.user?.name}
@@ -69,10 +101,8 @@ export default function registerCommands(bot) {
 💰 $${order.totalPrice}
 
 📌 <b>${order.status.toUpperCase()}</b>`,
-
           {
             parse_mode: "HTML",
-
             reply_markup: {
               inline_keyboard: [
                 [
@@ -110,20 +140,22 @@ export default function registerCommands(bot) {
               ],
             },
           }
-
         );
 
       }
 
     } catch (err) {
-
       console.log(err);
-
     }
 
   });
 
+
+
   bot.action(/status:(.*):(.*)/, async (ctx) => {
+
+    if (!isAdmin(ctx))
+      return ctx.answerCbQuery();
 
     try {
 
@@ -131,16 +163,11 @@ export default function registerCommands(bot) {
 
       const order = await Order.findByIdAndUpdate(
         orderId,
-        {
-          status,
-        },
-        {
-          new: true,
-        }
+        { status },
+        { new: true }
       ).populate("user", "name email");
 
       await ctx.editMessageText(
-
 `🛒 <b>ORDER</b>
 
 👤 ${order.user?.name}
@@ -150,48 +177,33 @@ export default function registerCommands(bot) {
 💰 $${order.totalPrice}
 
 📌 <b>${order.status.toUpperCase()}</b>`,
-
         {
           parse_mode: "HTML",
-
           reply_markup: {
             inline_keyboard: [
               [
                 {
-                  text:
-                    order.status === "pending"
-                      ? "✅ 🟡 Pending"
-                      : "🟡 Pending",
+                  text: order.status === "pending" ? "✅ 🟡 Pending" : "🟡 Pending",
                   callback_data: `status:${order._id}:pending`,
                 },
                 {
-                  text:
-                    order.status === "processing"
-                      ? "✅ 🔵 Processing"
-                      : "🔵 Processing",
+                  text: order.status === "processing" ? "✅ 🔵 Processing" : "🔵 Processing",
                   callback_data: `status:${order._id}:processing`,
                 },
               ],
               [
                 {
-                  text:
-                    order.status === "delivered"
-                      ? "✅ 🚚 Delivered"
-                      : "🚚 Delivered",
+                  text: order.status === "delivered" ? "✅ 🚚 Delivered" : "🚚 Delivered",
                   callback_data: `status:${order._id}:delivered`,
                 },
                 {
-                  text:
-                    order.status === "cancelled"
-                      ? "✅ ❌ Cancelled"
-                      : "❌ Cancelled",
+                  text: order.status === "cancelled" ? "✅ ❌ Cancelled" : "❌ Cancelled",
                   callback_data: `status:${order._id}:cancelled`,
                 },
               ],
             ],
           },
         }
-
       );
 
       await ctx.answerCbQuery("✅ Status updated");
@@ -199,7 +211,6 @@ export default function registerCommands(bot) {
     } catch (err) {
 
       console.log(err);
-
       await ctx.answerCbQuery("❌ Error");
 
     }
