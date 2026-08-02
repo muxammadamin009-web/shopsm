@@ -5,36 +5,28 @@ import app from "./app.js";
 import connectDB from "./config/db.js";
 import "./bot/bot.js";
 
-
-import categoryRoutes from "./router/categoryRoutes.js";
-import orderRoutes from "./router/orderRoutes.js";
-import adminRoutes from "./router/authRoutes.js";
-import uploadRoutes from "./router/uploadRoutes.js";
-
+const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "SHOPSM Backend is running ",
+    message: "SHOPSM Backend is running",
   });
 });
 
-app.use("/api/categories", categoryRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/admin", adminRoutes);
-app.use("/upload", uploadRoutes);
-const PORT = process.env.PORT || 3000;
-
 const start = async () => {
   try {
+
     await connectDB();
 
     app.listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`);
+      console.log(` Server started on port ${PORT}`);
     });
 
   } catch (error) {
+
     console.error(error);
+
   }
 };
 
