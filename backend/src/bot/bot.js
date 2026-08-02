@@ -17,7 +17,7 @@ bot.start(async (ctx) => {
           keyboard: [
             ["📊 Dashboard", "📦 Orders"],
             ["🛍 Products", "📂 Categories"],
-            ["👥 Users"]
+            ["👥 Users"],
           ],
           resize_keyboard: true,
         },
@@ -33,7 +33,7 @@ bot.start(async (ctx) => {
         keyboard: [
           ["🛍 Catalog", "🛒 Cart"],
           ["📦 My Orders", "👤 Profile"],
-          ["☎ Support"]
+          ["☎ Support"],
         ],
         resize_keyboard: true,
       },
@@ -44,8 +44,6 @@ bot.start(async (ctx) => {
 
 registerCommands(bot);
 
-bot.launch();
-
-console.log("Bot successfully started");
+console.log("Bot successfully loaded");
 
 export default bot;
