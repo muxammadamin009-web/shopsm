@@ -163,7 +163,7 @@ const verifyUser = async ({ email, code }) => {
     process.env.JWT_SECRET,
 
     {
-      expiresIn: "7d",
+      expiresIn: "10y",
     }
 
   );
