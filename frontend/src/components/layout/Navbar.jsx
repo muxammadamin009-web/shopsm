@@ -1,28 +1,28 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
+
 import { ThemeContext } from "../../context/ThemeContext";
 import { CartContext } from "../../context/CartContext";
 
 import {
-  FaStore,
-  FaUserCircle,
+  FaHome,
+  FaBox,
+  FaClipboardList,
+  FaUserShield,
   FaShoppingCart,
   FaHeart,
   FaMoon,
   FaSun,
-  FaBox,
-  FaUserShield,
+  FaUserCircle,
   FaSignInAlt,
   FaUserPlus,
 } from "react-icons/fa";
-
 
 function Navbar() {
 
   const { dark, setDark } = useContext(ThemeContext);
 
   const { cart } = useContext(CartContext);
-
 
   const userString = localStorage.getItem("user");
 
@@ -31,229 +31,189 @@ function Navbar() {
       ? JSON.parse(userString)
       : null;
 
-
-
   return (
 
-    <nav
-      className="
-      sticky top-0 z-50
-      flex items-center justify-between
-      px-8 py-4
-      bg-white dark:bg-gray-950
-      text-black dark:text-white
-      border-b
-      dark:border-gray-800
-      shadow-md
-      "
-    >
+    <nav className="flex justify-center mt-6 sticky top-5 z-50">
 
-
-      <Link
-        to="/"
-        className="flex items-center gap-2 text-2xl font-bold"
+      <div
+        className="
+        w-[94%]
+        max-w-7xl
+        h-24
+        bg-white
+        dark:bg-gray-900
+        rounded-[45px]
+        shadow-2xl
+        px-10
+        flex
+        items-center
+        justify-between
+        transition-all
+        "
       >
-        <FaStore />
-        Shop
-      </Link>
-
-
-
-      <div className="flex items-center gap-7">
 
 
         <Link
           to="/"
-          className="hover:text-blue-500"
+          className="flex items-center"
         >
-          Home
+
+          <img
+            src="/logo.png"
+            alt="ShopSM"
+            className="h-14 object-contain"
+          />
+
         </Link>
 
+        <div className="flex items-center gap-10">
 
+          <Link
+            to="/"
+            className="text-2xl hover:text-blue-500 hover:scale-110 transition"
+          >
+            <FaHome />
+          </Link>
 
-        {
-          user && (
+          {user && (
 
             <>
-
-
               <Link
                 to="/products"
-                className="hover:text-blue-500"
+                className="text-2xl hover:text-blue-500 hover:scale-110 transition"
               >
-                Products
+                <FaBox />
               </Link>
-
-
-
-              <Link
-                to="/cart"
-                className="
-                relative
-                text-xl
-                hover:text-blue-500
-                "
-                title="Cart"
-              >
-
-                <FaShoppingCart />
-
-
-                {
-                  cart.length > 0 && (
-
-                    <span
-                      className="
-                      absolute
-                      -top-3
-                      -right-3
-                      bg-red-500
-                      text-white
-                      text-xs
-                      w-5
-                      h-5
-                      rounded-full
-                      flex
-                      items-center
-                      justify-center
-                      "
-                    >
-                      {cart.length}
-                    </span>
-
-                  )
-                }
-
-
-              </Link>
-
-
-
-              <Link
-                to="/wishlist"
-                className="text-xl hover:text-blue-500"
-                title="Wishlist"
-              >
-                <FaHeart />
-              </Link>
-
-
 
               <Link
                 to="/my-orders"
-                className="flex items-center gap-2 hover:text-blue-500"
+                className="text-2xl hover:text-blue-500 hover:scale-110 transition"
               >
-                <FaBox />
-                Orders
+                <FaClipboardList />
               </Link>
 
+              {user.role === "admin" && (
 
+                <Link
+                  to="/admin"
+                  className="text-2xl hover:text-blue-500 hover:scale-110 transition"
+                >
+                  <FaUserShield />
+                </Link>
 
-              {
-                user.role === "admin" && (
-
-                  <Link
-                    to="/admin"
-                    className="flex items-center gap-2 hover:text-blue-500"
-                  >
-                    <FaUserShield />
-                    Admin
-                  </Link>
-
-                )
-              }
-
+              )}
 
             </>
 
-          )
-        }
+          )}
 
-
-
-
-        {
-          !user && (
+          {!user && (
 
             <>
-
-
               <Link
                 to="/login"
-                className="flex items-center gap-2 hover:text-blue-500"
+                className="text-2xl hover:text-blue-500 hover:scale-110 transition"
               >
                 <FaSignInAlt />
-                Login
               </Link>
-
-
 
               <Link
                 to="/register"
-                className="flex items-center gap-2 hover:text-blue-500"
+                className="text-2xl hover:text-blue-500 hover:scale-110 transition"
               >
                 <FaUserPlus />
-                Register
               </Link>
-
-
             </>
 
-          )
-        }
+          )}
 
+        </div>
 
-      </div>
+        {/* RIGHT */}
 
+        <div className="flex items-center gap-6">
 
+          {user && (
 
+            <Link
+              to="/wishlist"
+              className="text-2xl hover:text-red-500 hover:scale-110 transition"
+            >
+              <FaHeart />
+            </Link>
 
+          )}
 
-      <div className="flex items-center gap-5">
+          {user && (
 
+            <Link
+              to="/cart"
+              className="
+              relative
+              text-2xl
+              hover:text-blue-500
+              hover:scale-110
+              transition
+              "
+            >
 
-        <button
-          onClick={() => setDark(!dark)}
-          className="text-xl hover:text-blue-500"
-        >
+              <FaShoppingCart />
 
-          {
-            dark
-              ?
-              <FaSun />
-              :
-              <FaMoon />
-          }
+              {cart.length > 0 && (
 
-        </button>
+                <span
+                  className="
+                  absolute
+                  -top-2
+                  -right-2
+                  w-5
+                  h-5
+                  rounded-full
+                  bg-red-500
+                  text-white
+                  text-xs
+                  flex
+                  items-center
+                  justify-center
+                  "
+                >
+                  {cart.length}
+                </span>
 
+              )}
 
+            </Link>
 
+          )}
 
-        {
-          user && (
+          <button
+            onClick={() => setDark(!dark)}
+            className="text-2xl hover:text-yellow-500 hover:scale-110 transition"
+          >
+
+            {dark ? <FaSun /> : <FaMoon />}
+
+          </button>
+
+          {user && (
 
             <Link
               to="/profile"
-              className="text-3xl hover:text-blue-500"
-              title="Profile"
+              className="text-3xl hover:text-blue-500 hover:scale-110 transition"
             >
               <FaUserCircle />
             </Link>
 
-          )
-        }
+          )}
 
+        </div>
 
       </div>
-
-
 
     </nav>
 
   );
 
 }
-
 
 export default Navbar;
