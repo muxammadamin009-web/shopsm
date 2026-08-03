@@ -15,6 +15,7 @@ app.get("/", (req, res) => {
 
 const start = async () => {
   try {
+    console.log("Connecting to MongoDB...");
     await connectDB();
 
     app.listen(PORT, () => {
