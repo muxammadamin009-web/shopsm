@@ -167,11 +167,11 @@ const resendCode = async ({ email }) => {
     throw new Error("Email already verified");
 
   }
+  
+  console.log("EMAIL SKIPPED");
 
  // await sendVerificationCode(user);
- return {
-  message: "Registration successful",
-};
+
 
 
 
