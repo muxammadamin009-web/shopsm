@@ -95,3 +95,9 @@ const registerUser = async ({ name, email, password }) => {
   };
 
 };
+export default {
+  registerUser,
+  verifyUser,
+  resendCode,
+  loginUser,
+};
