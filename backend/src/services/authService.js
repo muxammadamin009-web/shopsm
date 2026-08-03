@@ -167,10 +167,29 @@ const resendCode = async ({ email }) => {
     throw new Error("Email already verified");
 
   }
-  
-  console.log("EMAIL SKIPPED");
+  console.log("1");
+const existUser = await User.findOne({ email });
 
- // await sendVerificationCode(user);
+console.log("2");
+
+const hashedPassword = await bcrypt.hash(password, 10);
+
+console.log("3");
+
+const user = await User.create({
+  name,
+  email,
+  password: hashedPassword,
+});
+
+console.log("4");
+
+// если используешь Brevo
+await sendVerificationCode(user);
+
+console.log("5");
+
+
 
 
 

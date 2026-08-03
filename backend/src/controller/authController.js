@@ -80,6 +80,26 @@ const login = async (req, res) => {
 
 };
 
+const register = async (req, res) => {
+  console.log("REGISTER REQUEST");
+
+  try {
+    console.log("BODY:", req.body);
+
+    const result = await authService.registerUser(req.body);
+
+    console.log("RESULT:", result);
+
+    res.status(201).json(result);
+  } catch (error) {
+    console.error("REGISTER ERROR:", error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 export default {
   register,
   verify,
