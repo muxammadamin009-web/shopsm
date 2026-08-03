@@ -168,7 +168,12 @@ const resendCode = async ({ email }) => {
 
   }
 
-  await sendVerificationCode(user);
+ // await sendVerificationCode(user);
+ return {
+  message: "Registration successful",
+};
+
+
 
   return {
 
